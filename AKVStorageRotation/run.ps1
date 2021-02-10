@@ -9,8 +9,9 @@ function RegenerateKey($keyId, $providerAddress){
     #Regenerate key 
     New-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName -KeyName $keyId
     $newKeyValue = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageAccountName|where KeyName -eq $keyId).value
-
-    return $newKeyValue
+    $connectString = 'DefaultEndpointsProtocol=https;AccountName=' + $storageAccountName + ';AccountKey=' + $newKeyValue + ';EndpointSuffix=core.windows.net'
+    
+    return $connectString
 }
 
 function AddSecretToKeyVault($keyVAultName,$secretName,$newAccessKeyValue,$exprityDate,$tags){
